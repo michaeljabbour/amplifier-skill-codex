@@ -24,7 +24,7 @@ amplifier init
 **Claude Code:**
 
 ```bash
-claude skill add https://github.com/michaeljabbour/amplifier-skill/blob/main/SKILL.md
+claude skill add https://github.com/michaeljabbour/amplifier-skill-codex/blob/main/SKILL.md
 ```
 
 **Warp (or manual install):**
@@ -32,7 +32,7 @@ claude skill add https://github.com/michaeljabbour/amplifier-skill/blob/main/SKI
 ```bash
 mkdir -p ~/.claude/skills/amplifier
 curl -o ~/.claude/skills/amplifier/SKILL.md \
-  https://raw.githubusercontent.com/michaeljabbour/amplifier-skill/main/SKILL.md
+  https://raw.githubusercontent.com/michaeljabbour/amplifier-skill-codex/main/SKILL.md
 ```
 
 **Other tools:** copy `SKILL.md` into the tool's skills/commands directory.
@@ -65,8 +65,7 @@ curl -o ~/.claude/skills/amplifier/SKILL.md \
 Run the skill validator:
 
 ```bash
-python3 /Users/michaeljabbour/.codex/skills/.system/skill-creator/scripts/quick_validate.py \
-  /Users/michaeljabbour/dev/amplifier-skill
+python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .
 ```
 
 ## Documentation
