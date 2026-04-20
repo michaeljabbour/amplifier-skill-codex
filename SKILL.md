@@ -1,29 +1,34 @@
 ---
 name: amplifier-skill
-description: Delegate complex work to Microsoft Amplifier from coding assistants. Use when users explicitly ask to use Amplifier, delegate to Amplifier, inspect Amplifier history/context, or discover Amplifier agents and bundles. Prefer conservative delegation and use CLI-first discovery with filesystem fallbacks in restricted environments.
+description: Delegate complex work to Microsoft Amplifier from AI agents (Manus, Claude Code, Cursor, Copilot). Use when users explicitly ask to use Amplifier, delegate to Amplifier, inspect Amplifier history/context, or discover Amplifier agents and bundles. Prefer conservative delegation and use CLI-first discovery with filesystem fallbacks in restricted environments.
 ---
 
 # Amplifier Skill
 
 Delegate only on explicit Amplifier intent and keep simple local work local.
 
+## Platform Context
+- **Manus:** Autonomous sandbox agent. Run Amplifier non-interactively (`amplifier run`). Use `export PATH="$HOME/.local/bin:$PATH"` before commands.
+- **Claude Code / Cursor / Copilot:** Interactive or semi-interactive. Use standard commands.
+- **Memory / Context:** If asked to maintain long-term state, use the `memory` bundle (`amplifier run --bundle memory`) to enable MemPalace and `project-context` integrations.
+
 ## Workflow
 
 ### 1. Run preflight checks
 
-Verify Amplifier is available before delegating:
+Verify Amplifier is available before delegating (ensure `uv` path is set for sandboxes):
 
 ```bash
+export PATH="$HOME/.local/bin:$PATH"
 command -v amplifier
-amplifier --help
 amplifier provider current
 ```
 
 If provider state is missing or invalid, instruct:
-
 ```bash
 amplifier init
 ```
+(Or configure `~/.amplifier/settings.yaml` manually if in a non-interactive sandbox like Manus).
 
 ### 2. Decide whether to delegate
 
@@ -39,13 +44,13 @@ When intent is ambiguous, ask one short clarification instead of auto-delegating
 
 ### 3. Delegate tasks to Amplifier
 
-Use single-shot delegation:
+Use single-shot delegation (Required for autonomous agents like Manus):
 
 ```bash
 amplifier run "<task description>"
 ```
 
-Use multi-turn delegation:
+Use multi-turn delegation (For interactive terminals like Claude Code):
 
 ```bash
 amplifier
@@ -99,6 +104,8 @@ If `amplifier` is missing, instruct installation:
 ```bash
 uv tool install git+https://github.com/microsoft/amplifier
 ```
+
+If the task requires TDD, design spec validation, or plan generation, use the `superpowers` bundle (`amplifier run --bundle superpowers`).
 
 If runtime commands fail in sandboxed/restricted sessions, keep moving with the helper script fallbacks and summarize what data was available.
 
